@@ -39,14 +39,27 @@ $(EXEC): $(OBJS)
 	mkdir -p $(OUT)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 
+.PHONY: all
 all: $(EXEC)
+
+.PHONY: run
 run: $(EXEC)
 	@echo "Starting Facebooc service..."
 	@./$(EXEC) $(port)
 
+.PHONY: clean
 clean:
 	$(RM) $(OBJS) $(EXEC) $(deps)
+
+.PHONY: distclean
 distclean: clean
 	$(RM) db.sqlite3
 
 -include $(deps)
+
+git-add-upstream:
+	git remote add upstream https://github.com/jserv/facebooc.git
+	git remote -v
+
+git-sync-upstream:
+	git checkout master && git fetch master && git merge upstream/master
