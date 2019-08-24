@@ -1,5 +1,6 @@
-### make CXX=gcc-9 -B
-### make CXX=clang-9 -B
+# Build example:
+# make CXX=gcc-9 -B all
+# make CXX=clang-9 -B all
 CFLAGS = -O0 -g -std=iso9899:2018 -Wall -I include
 
 GCC_CXXFLAGS = -DMESSAGE='"Compiled with GCC"'
@@ -72,8 +73,9 @@ distclean: clean
 
 -include $(deps)
 
+# apt-get install bear
 clang-json-compilation-db: clean
-	bear make CXX=clang-9 -B
+	bear make CXX=clang-9 -B all
 
 git-add-upstream:
 	git remote add upstream https://github.com/jserv/facebooc.git
