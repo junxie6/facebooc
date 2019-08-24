@@ -1,4 +1,20 @@
-CFLAGS = -O2 -g -std=c99 -Wall -I include
+### make CXX=gcc-9 -B
+### make CXX=clang-9 -B
+CFLAGS = -O0 -g -std=iso9899:2018 -Wall -I include
+
+GCC_CXXFLAGS = -DMESSAGE='"Compiled with GCC"'
+CLANG_CXXFLAGS = -DMESSAGE='"Compiled with Clang"'
+UNKNOWN_CXXFLAGS = -DMESSAGE='"Compiled with an unknown compiler"'
+
+ifeq ($(CXX),g++)
+	CXXFLAGS += $(GCC_CXXFLAGS)
+else ifeq ($(CXX),clang)
+	CXXFLAGS += $(CLANG_CXXFLAGS)
+else
+	CXXFLAGS += $(UNKNOWN_CXXFLAGS)
+endif
+
+### LDFLAGS
 LDFLAGS = -lsqlite3
 
 ifeq ($(OS),Windows_NT)
@@ -11,7 +27,6 @@ UNAME_S = $(shell uname -s)
 # the POSIX_C_SOURCE=1 on Mac OS X is corresponding to the version of
 # 1988 which is too old (defined in sys/cdefs.h)
 CFLAGS += -D_POSIX_C_SOURCE=199506L
-
 
 OUT = bin
 EXEC = $(OUT)/facebooc
@@ -33,11 +48,11 @@ OBJS = \
 deps := $(OBJS:%.o=%.o.d)
 
 src/%.o: src/%.c
-	$(CC) $(CFLAGS) -o $@ -MMD -MF $@.d -c $<
+	$(CXX) $(CFLAGS) -o $@ -MMD -MF $@.d -c $<
 
 $(EXEC): $(OBJS)
 	mkdir -p $(OUT)
-	$(CC) $(OBJS) -o $@ $(LDFLAGS)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
 
 .PHONY: all
 all: $(EXEC)
@@ -56,6 +71,9 @@ distclean: clean
 	$(RM) db.sqlite3
 
 -include $(deps)
+
+clang-json-compilation-db: clean
+	bear make CXX=clang-9 -B
 
 git-add-upstream:
 	git remote add upstream https://github.com/jserv/facebooc.git

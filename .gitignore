@@ -3,3 +3,5 @@
 *.a
 bin/*
 db.sqlite3
+
+compile_commands.json
