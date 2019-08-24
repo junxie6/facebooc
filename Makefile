@@ -62,4 +62,4 @@ git-add-upstream:
 	git remote -v
 
 git-sync-upstream:
-	git checkout master && git fetch master && git merge upstream/master
+	git checkout master && git fetch upstream && git merge upstream/master
