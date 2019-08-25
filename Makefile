@@ -74,6 +74,7 @@ distclean: clean
 -include $(deps)
 
 # apt-get install bear
+# https://github.com/rizsotto/Bear
 # Alternative: https://github.com/nickdiego/compiledb
 clang-json-compilation-db: clean
 	bear make CXX=clang-9 -B all
