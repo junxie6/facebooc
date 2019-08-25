@@ -1,6 +1,12 @@
 # Build example:
-# make CXX=gcc-9 -B all
-# make CXX=clang-9 -B all
+# make -B all CXX=gcc-9
+# make -B all CXX=clang-9
+#
+# How do you write a makefile for both clang and gcc?
+#
+# You can use CMake to achieve that. It is a better to use if you want to have portable code.
+# https://stackoverflow.com/questions/50941196/how-do-you-write-a-makefile-for-both-clang-and-gcc
+# https://stackoverflow.com/questions/10046114/in-cmake-how-can-i-test-if-the-compiler-is-clang
 CFLAGS = -O0 -g -std=iso9899:2018 -Wall -I include
 
 GCC_CXXFLAGS = -DMESSAGE='"Compiled with GCC"'
@@ -46,8 +52,13 @@ OBJS = \
 	src/models/post.o \
 	src/server.o
 
+# NOTE: A substitution reference substitutes the value of a variable with alterations that you specify.
+# https://stackoverflow.com/questions/26133377/understanding-makefile-with-c-o-and
+# https://stackoverflow.com/questions/26065734/makefile-enforce-library-dependency-ordering/26066761
 deps := $(OBJS:%.o=%.o.d)
 
+# NOTE: $< when used in the "recipe", means "the first prerequisite" - the first thing after the : in the line.
+# NOTE: $< is an automatic variable which means "the name of the first prerequisite".
 src/%.o: src/%.c
 	$(CXX) $(CFLAGS) -o $@ -MMD -MF $@.d -c $<
 
@@ -77,7 +88,7 @@ distclean: clean
 # https://github.com/rizsotto/Bear
 # Alternative: https://github.com/nickdiego/compiledb
 clang-json-compilation-db: clean
-	bear make CXX=clang-9 -B all
+	bear make -B all CXX=clang-9
 
 git-add-upstream:
 	git remote add upstream https://github.com/jserv/facebooc.git
