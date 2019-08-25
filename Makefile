@@ -7,6 +7,12 @@
 # You can use CMake to achieve that. It is a better to use if you want to have portable code.
 # https://stackoverflow.com/questions/50941196/how-do-you-write-a-makefile-for-both-clang-and-gcc
 # https://stackoverflow.com/questions/10046114/in-cmake-how-can-i-test-if-the-compiler-is-clang
+#
+# Useful GCC flags for C
+# https://stackoverflow.com/questions/3375697/useful-gcc-flags-for-c
+#
+# Recommended gcc warning options for C [closed]
+# https://stackoverflow.com/questions/154630/recommended-gcc-warning-options-for-c
 CFLAGS = -O0 -g -std=iso9899:2018 -Wall -I include
 
 GCC_CXXFLAGS = -DMESSAGE='"Compiled with GCC"'
